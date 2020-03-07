@@ -1,0 +1,57 @@
+{
+  "name": "nba_jerseys",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "serve": "vue-cli-service serve"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "vue": "^2.6.10",
+    "vue-meta": "^2.3.2",
+    "vue-mq": "^1.0.1",
+    "vue-router": "^3.0.2",
+    "vuex": "^3.1.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-eslint": "^3.6.0",
+    "@vue/cli-service": "^3.6.0",
+    "@vue/eslint-config-airbnb": "^4.0.0",
+    "@vue/test-utils": "^1.0.0-beta.29",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-plugin-component": "^1.1.1",
+    "css-loader": "^2.1.1",
+    "eslint": "^5.16.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-vue": "^5.2.2",
+    "lint-staged": "^8.1.5",
+    "node-sass": "^4.13.0",
+    "npm-run-all": "^4.1.5",
+    "sass-loader": "^7.1.0",
+    "stylelint": "^10.1.0",
+    "stylelint-config-airbnb": "^0.0.0",
+    "stylelint-config-rational-order": "^0.1.2",
+    "stylelint-order": "^3.0.1",
+    "stylelint-scss": "^3.10.0",
+    "vue-code-highlight": "^0.7.0",
+    "vue-template-compiler": "^2.6.3"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "vue-cli-service lint",
+      "git add"
+    ],
+    "*.vue": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  }
+}

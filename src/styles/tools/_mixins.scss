@@ -1,0 +1,95 @@
+$breakpoints: (
+  xs: 0,
+  sm: 720px,
+  md: 960px,
+  lg: 1280px,
+  xl: 1920px,
+  xxl: Infinity,
+) !default;
+
+@mixin bp($val) {
+  @if type-of($val) == "map" {
+    $min-value: map-get($val, min);
+    $max-value: map-get($val, max);
+
+    @if $min-value == null {
+      @media screen and (max-width: $max-value) {
+        @content;
+      }
+    }
+
+    @if $max-value == null {
+      @media screen and (min-width: $min-value) {
+        @content;
+      }
+    }
+
+    @if ($min-value != null) and ($max-value != null) {
+      @media screen and (min-width: $min-value) and (max-width: $max-value) {
+        @content;
+      }
+    }
+
+    @else {
+      @warn "$val must be a SASS MAP like (min: 100px, max: 200px)";
+    }
+  }
+
+  @if type-of($val) == "list" or type-of($val) == "string" {
+    $bp: nth($val, 1);
+    $dir: if(length($val) > 1, nth($val, 2), down);
+    $bpValue: map-get($breakpoints, $bp);
+
+    @if map-has-key($breakpoints, $bp) {
+      @if $dir == "only" {
+        $list-bp-key: map-keys($breakpoints);
+        $list-bp-value: map-keys($breakpoints);
+        $next-bp-key: index($list-bp-key, $bp) + 1;
+        $next-bp-value: nth($list-bp-value, $next-bp-key);
+
+        $min-value: map-get($breakpoints, $bp);
+        $max-value: map-get($breakpoints, $next-bp-value);
+
+        @media screen and (min-width: $min-value) and (max-width: $max-value - 1) {
+          @content;
+        }
+      }
+
+      @if $dir == "up" {
+        @media screen and (min-width: $bpValue) {
+          @content;
+        }
+      }
+
+      @if $dir == "down" {
+        @media screen and (max-width: $bpValue - 1px) {
+          @content;
+        }
+      }
+    }
+
+    @else {
+      @warn "breakpoint doesn't exist";
+    }
+  }
+
+  @else {
+    @warn "type-of $val must be a string or a list";
+  }
+}
+
+@mixin centralizer($display: flex) {
+  display: $display;
+  align-items: center;
+  justify-content: center;
+  @content;
+}
+
+@mixin overlay($position: absolute) {
+  position: $position;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  @content;
+}

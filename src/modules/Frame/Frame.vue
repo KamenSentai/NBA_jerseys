@@ -2,7 +2,7 @@
   <div :class="$style.container">
     <img
       :class="$style.image"
-      src="@/assets/MockupFront.png"
+      src="@/assets/Mockup.png"
       alt="Mockup"
     >
     <ModuleSketch :class="$style.sketch" />

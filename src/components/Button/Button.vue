@@ -80,7 +80,7 @@ export default {
 .container {
   min-width: 3.6rem;
   height: 3.6rem;
-  padding: 1.8rem;
+  padding: 0 1.8rem;
   color: $medium;
   font-size: 1.2rem;
   background-color: $light;

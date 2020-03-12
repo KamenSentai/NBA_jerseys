@@ -1,25 +1,22 @@
 <template>
   <div :class="$style.container">
     <ComponentButton
-      v-for="team in teams"
-      :key="team.slug"
+      v-for="size in sizes"
+      :key="`size-${size}`"
       :class="$style.button"
-      :color="team.colors[1]"
-      :is-active="activeSlug === team.slug"
-      :is-darkable="team.isDarkable"
-      @click="click($event, team)"
-      @enter="updateTeam(team)"
-      @leave="updateTeam(activeTeam)"
+      :color="activeTeam.colors[1]"
+      :is-active="activeSize === size"
+      :is-darkable="activeTeam.isDarkable"
+      @click="click($event, size)"
     >
-      {{ team.name }}
+      {{ size.toUpperCase() }}
     </ComponentButton>
     <transition name="fade">
       <ComponentButton
-        v-if="!!activeTeam"
+        v-if="!!activeSize"
         :class="$style.button"
         :color="activeTeam.colors[1]"
         is-button
-        @click="$emit('update')"
       >
         <ComponentIcon
           name="Arrow"
@@ -38,27 +35,22 @@ import { Button as ComponentButton } from '@/components/Button'
 import { Icon as ComponentIcon } from '@/components/Icon'
 
 export default {
-  name: 'Team',
+  name: 'Size',
   components: {
     ComponentButton,
     ComponentIcon,
   },
   data() {
     return {
-      activeSlug: '',
+      activeSize: '',
     }
   },
-  computed: {
-    ...mapGetters('funnel', ['teams']),
-    activeTeam() {
-      return this.teams.find(team => team.slug === this.activeSlug)
-    },
-  },
+  computed: mapGetters('funnel', ['activeTeam', 'sizes']),
   methods: {
-    ...mapActions('funnel', ['updateTeam']),
-    click(event, team) {
-      this.activeSlug = event ? team.slug : ''
-      this.updateTeam(team)
+    ...mapActions('funnel', ['updateSize']),
+    click(event, size) {
+      this.activeSize = event ? size : ''
+      this.updateSize(this.activeSize)
     },
   },
 }

@@ -11,14 +11,14 @@
     </h1>
     <component
       :is="currentStep.component"
-      @update="changeStep($event)"
+      @update="changeStep"
     />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { Team as FunnelTeam } from './components'
+import { Size as FunnelSize, Team as FunnelTeam } from './components'
 
 export default {
   name: 'Funnel',
@@ -33,8 +33,15 @@ export default {
       steps: [
         {
           title: 'Choose your team',
-          name: '',
+          name: 'team',
           component: FunnelTeam,
+          target: 'size',
+        },
+        {
+          title: 'Choose your size',
+          name: 'size',
+          component: FunnelSize,
+          target: '',
         },
       ],
     }
@@ -47,8 +54,8 @@ export default {
   },
   methods: {
     ...mapActions('funnel', ['updateStep']),
-    changeStep(name) {
-      this.updateStep(name)
+    changeStep() {
+      this.updateStep(this.currentStep.target)
     },
   },
 }

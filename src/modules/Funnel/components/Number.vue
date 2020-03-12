@@ -1,19 +1,17 @@
 <template>
   <div :class="$style.container">
-    <ComponentButton
-      v-for="size in sizes"
-      :key="`size-${size}`"
-      :class="$style.button"
-      :color="activeTeam.colors[1]"
-      :is-active="activeSize === size"
-      :is-darkable="activeTeam.isDarkable"
-      @click="click($event, size)"
-    >
-      {{ size.toUpperCase() }}
-    </ComponentButton>
+    <ComponentInput
+      v-model="number"
+      :class="$style.input"
+      min="0"
+      max="99"
+      placeholder="Number"
+      type="number"
+      @input="type($event)"
+    />
     <transition name="fade">
       <ComponentButton
-        v-if="!!activeSize"
+        v-if="!!number"
         :class="$style.button"
         :color="activeTeam.colors[1]"
         is-button
@@ -34,12 +32,14 @@
 import { mapGetters, mapActions } from 'vuex'
 import { Button as ComponentButton } from '@/components/Button'
 import { Icon as ComponentIcon } from '@/components/Icon'
+import { Input as ComponentInput } from '@/components/Input'
 
 export default {
-  name: 'Size',
+  name: 'Number',
   components: {
     ComponentButton,
     ComponentIcon,
+    ComponentInput,
   },
   props: {
     activeTeam: {
@@ -49,15 +49,15 @@ export default {
   },
   data() {
     return {
-      activeSize: '',
+      number: null,
     }
   },
   computed: mapGetters('funnel', ['sizes']),
   methods: {
-    ...mapActions('funnel', ['updateSize']),
-    click(event, size) {
-      this.activeSize = event ? size : ''
-      this.updateSize(this.activeSize)
+    ...mapActions('funnel', ['updateNumber']),
+    type(event) {
+      this.number = Math.max(0, Math.min(99, this.number))
+      this.updateNumber(event)
     },
   },
 }
@@ -68,6 +68,7 @@ export default {
   margin: -5px;
 }
 
+.input,
 .button {
   margin: .5rem;
 }

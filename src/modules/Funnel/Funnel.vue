@@ -11,6 +11,7 @@
     </h1>
     <component
       :is="currentStep.component"
+      :active-team="activeTeam"
       @update="changeStep"
     />
   </div>
@@ -18,7 +19,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { Size as FunnelSize, Team as FunnelTeam } from './components'
+import { Number as FunnelNumber, Size as FunnelSize, Team as FunnelTeam } from './components'
 
 export default {
   name: 'Funnel',
@@ -35,6 +36,12 @@ export default {
           title: 'Choose your team',
           name: 'team',
           component: FunnelTeam,
+          target: 'number',
+        },
+        {
+          title: 'Write your number',
+          name: 'number',
+          component: FunnelNumber,
           target: 'size',
         },
         {

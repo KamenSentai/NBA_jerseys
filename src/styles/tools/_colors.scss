@@ -1,0 +1,16 @@
+$colors: (
+  neutral: #3F3F3F
+);
+
+$neutral: map-get($colors, neutral);
+
+@each $name, $color in $colors {
+
+  .bg-#{$name} {
+    background-color: $color;
+  }
+
+  .text-#{$name} {
+    color: $color;
+  }
+}

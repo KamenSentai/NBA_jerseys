@@ -2,6 +2,9 @@ export default {
   updateStep(state, name) {
     state.stepName = name
   },
+  updateName(state, name) {
+    state.name = name
+  },
   updateNumber(state, number) {
     state.number = number
   },

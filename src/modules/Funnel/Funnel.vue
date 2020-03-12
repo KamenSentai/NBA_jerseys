@@ -19,7 +19,12 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import { Number as FunnelNumber, Size as FunnelSize, Team as FunnelTeam } from './components'
+import {
+  Name as FunnelName,
+  Number as FunnelNumber,
+  Size as FunnelSize,
+  Team as FunnelTeam,
+} from './components'
 
 export default {
   name: 'Funnel',
@@ -42,6 +47,12 @@ export default {
           title: 'Write your number',
           name: 'number',
           component: FunnelNumber,
+          target: 'name',
+        },
+        {
+          title: 'Write your name',
+          name: 'name',
+          component: FunnelName,
           target: 'size',
         },
         {

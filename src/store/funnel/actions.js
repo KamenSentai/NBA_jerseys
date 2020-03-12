@@ -2,6 +2,9 @@ export default {
   updateStep({ commit }, name) {
     commit('updateStep', name)
   },
+  updateName({ commit }, name = '') {
+    commit('updateName', name)
+  },
   updateNumber({ commit }, number = '') {
     commit('updateNumber', number)
   },

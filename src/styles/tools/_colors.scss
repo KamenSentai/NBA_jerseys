@@ -1,7 +1,10 @@
 $colors: (
-  neutral: #3F3F3F
+  light: #FFFFFF,
+  neutral: #3F3F3F,
+  dark: #000000,
 );
 
+$light: map-get($colors, light);
 $neutral: map-get($colors, neutral);
 
 @each $name, $color in $colors {

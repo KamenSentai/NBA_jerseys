@@ -72,7 +72,7 @@ export default {
   right: 0;
   left: 0;
   height: 4rem;
-  background: radial-gradient(rgba($neutral, .125), rgba($neutral, 0) 75%);
+  background: radial-gradient(rgba($neutral, .25), rgba($neutral, 0) 75%);
   border-radius: 100%;
   content: "";
 }

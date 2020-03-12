@@ -1,0 +1,48 @@
+@import "./colors";
+
+$steps: (
+  (0, 0%),
+  (1.3, 8.1%),
+  (4.4, 15.5%),
+  (10.4, 22.5%),
+  (17.5, 29%),
+  (25.9, 35.3%),
+  (35.2, 41.2%),
+  (45, 47.1%),
+  (55, 52.9%),
+  (64.8, 58.8%),
+  (74.1, 64.7%),
+  (82.5, 71%),
+  (89.6, 77.5%),
+  (95.1, 84.5%),
+  (98.7, 91.9%),
+  (100, 100%)
+);
+
+@function color($name, $opacity: 1) {
+  $value: nth(map-get($colors, $name), 1);
+
+  @if $opacity != 1 {
+    @return unquote("rgba(#{red($value)}, #{green($value)}, #{blue($value)}, #{$opacity})");
+  }
+
+  @else {
+    @return map-get($colors, $name);
+  }
+}
+
+@function gradient($color, $factor: 1) {
+  $res: "";
+
+  @each $opacity, $step in $steps {
+    $res: $res + color($color, $opacity * $factor / 100) + " " + $step;
+
+    @if index($steps, ($opacity, $step)) < length($steps) {
+      $res: $res + ", ";
+    }
+
+    @else {
+      @return unquote($res);
+    }
+  }
+}

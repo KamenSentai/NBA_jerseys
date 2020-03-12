@@ -22,6 +22,7 @@ export default [
       '#000000',
       '#FFFFFF',
     ],
+    isDarkable: true,
   },
   {
     name: 'Charlotte Hornets',
@@ -134,6 +135,7 @@ export default [
       '#00471B',
       '#EEE1C6',
     ],
+    isDarkable: true,
   },
   {
     name: 'Minnesota Timberwolves',

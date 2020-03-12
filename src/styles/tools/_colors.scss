@@ -1,11 +1,12 @@
 $colors: (
   light: #FFFFFF,
-  neutral: #3F3F3F,
+  medium: #808080,
   dark: #000000,
 );
 
 $light: map-get($colors, light);
-$neutral: map-get($colors, neutral);
+$medium: map-get($colors, medium);
+$dark: map-get($colors, dark);
 
 @each $name, $color in $colors {
 

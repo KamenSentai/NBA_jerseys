@@ -25,17 +25,16 @@ export default {
   position: relative;
   justify-self: center;
   font-size: 0;
+  pointer-events: none;
 }
 
 .image {
   max-width: 25vw;
   max-height: 75vh;
   opacity: 0;
-  pointer-events: none;
 }
 
 .sketch {
-  pointer-events: none;
   @include centralizer;
   @include overlay;
 }

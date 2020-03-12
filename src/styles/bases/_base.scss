@@ -11,4 +11,10 @@ body {
 body {
   font-weight: normal;
   font-size: 1.6rem;
+  font-family: $inter;
+}
+
+*::selection {
+  color: $light;
+  background-color: $medium;
 }

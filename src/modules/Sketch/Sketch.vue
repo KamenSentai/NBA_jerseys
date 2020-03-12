@@ -3,6 +3,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import P5 from 'p5'
 import MockupFrontBody from '@/assets/MockupFrontBody.png'
 import MockupFrontHandle from '@/assets/MockupFrontHandle.png'
@@ -27,6 +28,19 @@ export default {
         height: 0,
       },
     }
+  },
+  computed: mapGetters('funnel', ['activeTeam']),
+  watch: {
+    activeTeam(value) {
+      const { mockup, sketch } = this
+      sketch.clear()
+      sketch.push()
+      if (value) sketch.tint(this.activeTeam.colors[0])
+      sketch.image(mockup.front.body, 0, 0, sketch.width, sketch.height)
+      if (value) sketch.tint(this.activeTeam.colors[1])
+      sketch.image(mockup.front.handle, 0, 0, sketch.width, sketch.height)
+      sketch.pop()
+    },
   },
   mounted() {
     // eslint-disable-next-line no-new
@@ -72,7 +86,7 @@ export default {
   right: 0;
   left: 0;
   height: 4rem;
-  background: radial-gradient(rgba($neutral, .25), rgba($neutral, 0) 75%);
+  background: radial-gradient(rgba($dark, .125), rgba($dark, 0) 75%);
   border-radius: 100%;
   content: "";
 }

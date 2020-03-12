@@ -1,0 +1,35 @@
+$path: "/fonts";
+$college: "College", sans-serif;
+$inter: "Inter", sans-serif;
+
+@font-face {
+  font-weight: normal;
+  font-family: "College";
+  src: url("#{$path}/College-Regular.woff") format("woff"),
+    url("#{$path}/College-Regular.woff2") format("woff2")
+  ;
+}
+
+@font-face {
+  font-weight: bold;
+  font-family: "College";
+  src: url("#{$path}/College-Bold.woff") format("woff"),
+    url("#{$path}/College-Bold.woff2") format("woff2")
+  ;
+}
+
+@font-face {
+  font-weight: normal;
+  font-family: "Inter";
+  src: url("#{$path}/Inter-Regular.woff") format("woff"),
+    url("#{$path}/Inter-Regular.woff2") format("woff2")
+  ;
+}
+
+@font-face {
+  font-weight: bold;
+  font-family: "Inter";
+  src: url("#{$path}/Inter-SemiBold.woff") format("woff"),
+    url("#{$path}/Inter-SemiBold.woff2") format("woff2")
+  ;
+}

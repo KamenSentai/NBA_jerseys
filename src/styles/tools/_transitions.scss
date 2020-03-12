@@ -1,0 +1,12 @@
+.fade-enter-active,
+.fade-leave-active {
+  transition-timing-function: ease-in-out;
+  transition-duration: .25s;
+  transition-property: transform, opacity;
+}
+
+.fade-enter,
+.fade-leave-to {
+  transform: translateX(-12.5%);
+  opacity: 0;
+}

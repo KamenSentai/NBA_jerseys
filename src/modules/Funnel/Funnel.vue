@@ -42,24 +42,28 @@ export default {
           name: 'team',
           component: FunnelTeam,
           target: 'number',
+          isTurned: false,
         },
         {
           title: 'Write your number',
           name: 'number',
           component: FunnelNumber,
           target: 'name',
+          isTurned: false,
         },
         {
           title: 'Write your name',
           name: 'name',
           component: FunnelName,
           target: 'size',
+          isTurned: true,
         },
         {
           title: 'Choose your size',
           name: 'size',
           component: FunnelSize,
           target: '',
+          isTurned: false,
         },
       ],
     }
@@ -69,10 +73,14 @@ export default {
     currentStep() {
       return this.steps.find(step => step.name === this.stepName)
     },
+    targetStep() {
+      return this.steps.find(step => step.name === this.currentStep.target)
+    },
   },
   methods: {
-    ...mapActions('funnel', ['updateStep']),
+    ...mapActions('funnel', ['turn', 'updateStep']),
     changeStep() {
+      this.turn(this.targetStep.isTurned)
       this.updateStep(this.currentStep.target)
     },
   },

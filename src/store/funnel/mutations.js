@@ -1,6 +1,6 @@
 export default {
-  updateStep(state, name) {
-    state.stepName = name
+  turn(state, value) {
+    state.isTurned = value === undefined ? !state.isTurned : value
   },
   updateName(state, name) {
     state.name = name
@@ -10,6 +10,9 @@ export default {
   },
   updateSize(state, size) {
     state.activeSize = size
+  },
+  updateStep(state, name) {
+    state.stepName = name
   },
   updateTeam(state, team) {
     state.activeTeam = team

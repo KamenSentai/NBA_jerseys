@@ -14,6 +14,16 @@ export default {
   name: 'Sketch',
   data() {
     return {
+      deltas: [
+        [0, -1],
+        [1, -1],
+        [1, 0],
+        [1, 1],
+        [0, 1],
+        [-1, 1],
+        [-1, 0],
+        [-1, -1],
+      ],
       fontPath: 'fonts/College-Bold.woff',
       mockup: {
         back: {
@@ -32,14 +42,30 @@ export default {
       },
     }
   },
-  computed: mapGetters('funnel', ['activeTeam', 'number']),
+  computed: {
+    ...mapGetters('funnel', ['activeTeam', 'isTurned', 'name', 'number']),
+    scaledDeltas() {
+      return n => this.deltas.map(delta => delta.map(value => value * n))
+    },
+  },
   watch: {
     activeTeam() {
       this.drawMockup()
     },
+    isTurned() {
+      this.drawMockup()
+      if (this.number) this.writeNumber()
+      if (this.name && this.isTurned) this.writeName()
+    },
+    name() {
+      this.drawMockup()
+      if (this.number) this.writeNumber()
+      if (this.name && this.isTurned) this.writeName()
+    },
     number() {
       this.drawMockup()
-      this.writeNumber()
+      if (this.number) this.writeNumber()
+      if (this.name && this.isTurned) this.writeName()
     },
   },
   mounted() {
@@ -67,51 +93,89 @@ export default {
         this.updateSize()
         sketch.resizeCanvas(this.windowSize.width, this.windowSize.height)
         this.drawMockup()
-        this.writeNumber()
+        if (this.number) this.writeNumber()
+        if (this.name && this.isTurned) this.writeName()
       }
     }, this.$el)
   },
   methods: {
+    drawBorder(x, y, text) {
+      const { sketch } = this
+      sketch.push()
+      sketch.translate(x, y)
+      sketch.text(text, 0, 0)
+      sketch.pop()
+    },
     drawMockup() {
-      const { activeTeam, mockup, sketch } = this
+      const {
+        activeTeam,
+        isTurned,
+        mockup,
+        sketch,
+      } = this
+      const mockupSide = !isTurned ? mockup.front : mockup.back
       sketch.clear()
       sketch.push()
       if (activeTeam) sketch.tint(this.activeTeam.colors[0])
-      sketch.image(mockup.front.body, 0, 0, sketch.width, sketch.height)
+      sketch.image(mockupSide.body, 0, 0, sketch.width, sketch.height)
       if (activeTeam) sketch.tint(this.activeTeam.colors[1])
-      sketch.image(mockup.front.handle, 0, 0, sketch.width, sketch.height)
+      sketch.image(mockupSide.handle, 0, 0, sketch.width, sketch.height)
       sketch.pop()
     },
-    writeNumber() {
-      const { activeTeam, number, sketch } = this
-      const drawBorder = (x, y) => {
-        sketch.push()
-        sketch.translate(x, y)
-        sketch.text(number, 0, 0)
-        sketch.pop()
-      }
-      const deltas = [
-        [0, -2],
-        [2, -2],
-        [2, 0],
-        [2, 2],
-        [0, 2],
-        [-2, 2],
-        [-2, 0],
-        [-2, -2],
-      ]
+    writeName() {
+      const {
+        activeTeam,
+        deltas,
+        name,
+        sketch,
+      } = this
+      const dx = sketch.width * 0.53125
+      const dy = sketch.height * 0.15625
+      const textSize = 30
+      const theta = -sketch.PI / 60
 
       sketch.push()
-      sketch.textSize(60)
-      sketch.translate(sketch.width * 0.375, sketch.height * 0.4375)
-      sketch.rotate(sketch.PI / 60)
-      sketch.fill('#FFFFFF')
+      sketch.textSize(textSize)
+      sketch.translate(dx, dy)
+      sketch.rotate(theta)
+      sketch.fill('#FFFFFFB0')
 
       for (let i = 0; i < deltas.length; i++) {
-        drawBorder.apply(this, deltas[i])
+        this.drawBorder(...deltas[i], name)
       }
 
       sketch.fill(activeTeam.colors[1])
+      sketch.text(name, 0, 0)
+      sketch.fill('#00000040')
+      sketch.text(name, 0, 0)
+      sketch.pop()
+    },
+    writeNumber() {
+      const {
+        activeTeam,
+        isTurned,
+        number,
+        sketch,
+      } = this
+      const deltas = this.scaledDeltas(2)
+      const dx = !isTurned ? sketch.width * 0.375 : sketch.width * 0.5625
+      const dy = !isTurned ? sketch.height * 0.4375 : sketch.height * 0.4375
+      const textSize = !isTurned ? 75 : 150
+      const theta = !isTurned ? sketch.PI / 60 : -sketch.PI / 60
+
+      sketch.push()
+      sketch.textSize(textSize)
+      sketch.translate(dx, dy)
+      sketch.rotate(theta)
+      sketch.fill('#FFFFFFB0')
+
+      for (let i = 0; i < deltas.length; i++) {
+        this.drawBorder(...deltas[i], number)
+      }
+
+      sketch.fill(activeTeam.colors[1])
+      sketch.text(number, 0, 0)
+      sketch.fill('#00000040')
       sketch.text(number, 0, 0)
       sketch.pop()
     },

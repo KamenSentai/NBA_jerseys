@@ -55,9 +55,9 @@ export default {
   computed: mapGetters('funnel', ['sizes']),
   methods: {
     ...mapActions('funnel', ['updateNumber']),
-    type(event) {
+    type() {
       this.number = Math.max(0, Math.min(99, this.number))
-      this.updateNumber(event)
+      this.updateNumber(this.number)
     },
   },
 }

@@ -3,8 +3,9 @@
     <ComponentInput
       v-model="name"
       :class="$style.input"
+      maxlength="10"
       placeholder="Name"
-      @input="updateName($event)"
+      @input="type($event)"
     />
     <transition name="fade">
       <ComponentButton
@@ -50,7 +51,13 @@ export default {
     }
   },
   computed: mapGetters('funnel', ['sizes']),
-  methods: mapActions('funnel', ['updateName']),
+  methods: {
+    ...mapActions('funnel', ['updateName']),
+    type() {
+      this.name = this.name.replace(/[^a-zA-Z]/, '')
+      this.updateName(this.name)
+    },
+  },
 }
 </script>
 

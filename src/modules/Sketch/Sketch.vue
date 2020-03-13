@@ -6,12 +6,14 @@
 /* eslint-disable no-bitwise */
 import { mapGetters } from 'vuex'
 import P5 from 'p5'
+import MockupBackBottom from '@/assets/MockupBackBottom.png'
 import MockupBackBody from '@/assets/MockupBackBody.png'
 import MockupBackHandle from '@/assets/MockupBackHandle.png'
-import MockupBackMask from '@/assets/MockupBackMask.png'
+import MockupBackTop from '@/assets/MockupBackTop.png'
 import MockupFrontBody from '@/assets/MockupFrontBody.png'
+import MockupFrontBottom from '@/assets/MockupFrontBottom.png'
 import MockupFrontHandle from '@/assets/MockupFrontHandle.png'
-import MockupFrontMask from '@/assets/MockupFrontMask.png'
+import MockupFrontTop from '@/assets/MockupFrontTop.png'
 
 export default {
   name: 'Sketch',
@@ -33,17 +35,24 @@ export default {
         [-1, 0],
         [-1, -1],
       ],
+      dots: {
+        gap: 10,
+        reducer: 0.75,
+        size: 10,
+      },
       fontPath: 'fonts/College-Bold.woff',
       mockup: {
         back: {
           body: null,
+          bottom: null,
           handle: null,
-          mask: null,
+          top: null,
         },
         front: {
           body: null,
+          bottom: null,
           handle: null,
-          mask: null,
+          top: null,
         },
       },
       sketch: null,
@@ -58,27 +67,56 @@ export default {
     dataCombined() {
       return `${this.activeTeam ? this.activeTeam.slug : ''}${this.number}${this.name}${this.size}`
     },
+    dotsSprites() {
+      const { mockupSide } = this
+
+      return {
+        xs: [],
+        s: [mockupSide.bottom],
+        m: [mockupSide.bottom, mockupSide.top],
+        l: [mockupSide.top],
+        xl: [],
+      }
+    },
     isInverted() {
       return this.isReverse || this.isTurned
+    },
+    mockupSide() {
+      return !this.isInverted ? this.mockup.front : this.mockup.back
+    },
+    randomRange() {
+      const result = []
+
+      for (let i = 0; i < 100; i++) {
+        result.push(i)
+      }
+
+      result.sort(() => Math.random() - 0.5)
+
+      return result
     },
     scaledDeltas() {
       return n => this.deltas.map(delta => delta.map(value => value * n))
     },
-    uniqueSeed() {
-      const dataCombined = this.dataCombined || ''
-      let hash = 0
+    seed() {
+      return (string = '') => {
+        let hash = 0
 
-      for (let i = 0; i < dataCombined.length; i++) {
-        hash = ((hash << 5) - hash) + dataCombined.charCodeAt(i)
-        hash |= 0
+        for (let i = 0; i < string.length; i++) {
+          hash = ((hash << 5) - hash) + string.charCodeAt(i)
+          hash |= 0
+        }
+
+        return hash
       }
-
-      return Math.abs(hash)
+    },
+    uniqueSeed() {
+      return this.seed(this.dataCombined)
     },
   },
   watch: {
     activeTeam() {
-      this.drawMockup()
+      this.draw()
     },
     isTurned() {
       this.draw()
@@ -101,11 +139,13 @@ export default {
       sketch.preload = () => {
         this.font = sketch.loadFont(this.fontPath)
         this.mockup.back.body = sketch.loadImage(MockupBackBody)
+        this.mockup.back.bottom = sketch.loadImage(MockupBackBottom)
         this.mockup.back.handle = sketch.loadImage(MockupBackHandle)
-        this.mockup.back.mask = sketch.loadImage(MockupBackMask)
+        this.mockup.back.top = sketch.loadImage(MockupBackTop)
         this.mockup.front.body = sketch.loadImage(MockupFrontBody)
+        this.mockup.front.bottom = sketch.loadImage(MockupFrontBottom)
         this.mockup.front.handle = sketch.loadImage(MockupFrontHandle)
-        this.mockup.front.mask = sketch.loadImage(MockupFrontMask)
+        this.mockup.front.top = sketch.loadImage(MockupFrontTop)
       }
 
       sketch.setup = () => {
@@ -126,6 +166,7 @@ export default {
   methods: {
     draw() {
       this.drawMockup()
+      if (this.activeTeam) this.drawDots()
       if (this.number) this.writeNumber()
       if (this.name && this.isInverted) this.writeName()
       this.sketch.randomSeed(this.uniqueSeed)
@@ -137,19 +178,39 @@ export default {
       sketch.text(text, 0, 0)
       sketch.pop()
     },
+    drawDots() {
+      const {
+        activeTeam,
+        dotsSprites,
+        number,
+        randomRange,
+        size,
+        sketch,
+      } = this
+
+      if (size) {
+        const sprites = dotsSprites[size]
+        const opacityPer = number ? randomRange[number] : 100
+        const opacityDec = parseFloat(Math.round(opacityPer / 100 * 255))
+        const opacityHex = `${opacityDec < 10 ? '0' : ''}${opacityDec.toString(16)}`
+        sketch.tint(`${activeTeam.colors[1]}${opacityHex}`)
+
+        sprites.forEach((sprite) => {
+          sketch.image(sprite, 0, 0, sketch.width, sketch.height)
+        })
+      }
+    },
     drawMockup() {
       const {
         activeTeam,
-        isInverted,
-        mockup,
+        mockupSide,
         sketch,
       } = this
-      const mockupSide = !isInverted ? mockup.front : mockup.back
       sketch.clear()
       sketch.push()
-      if (activeTeam) sketch.tint(this.activeTeam.colors[0])
+      if (activeTeam) sketch.tint(activeTeam.colors[0])
       sketch.image(mockupSide.body, 0, 0, sketch.width, sketch.height)
-      if (activeTeam) sketch.tint(this.activeTeam.colors[1])
+      if (activeTeam) sketch.tint(activeTeam.colors[1])
       sketch.image(mockupSide.handle, 0, 0, sketch.width, sketch.height)
       sketch.pop()
     },

@@ -8,6 +8,8 @@
       :is-active="activeSize === size"
       :is-darkable="activeTeam.isDarkable"
       @click="click($event, size)"
+      @enter="updateSize(size)"
+      @leave="updateSize(activeSize)"
     >
       {{ size.toUpperCase() }}
     </ComponentButton>

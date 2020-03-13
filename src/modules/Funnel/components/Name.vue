@@ -54,7 +54,7 @@ export default {
   methods: {
     ...mapActions('funnel', ['updateName']),
     type() {
-      this.name = this.name.replace(/[^a-zA-Z]/, '')
+      this.name = this.name.replace(/[^a-zA-Z]/, '').toUpperCase()
       this.updateName(this.name)
     },
   },

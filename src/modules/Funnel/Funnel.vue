@@ -41,6 +41,13 @@ export default {
           title: 'Choose your team',
           name: 'team',
           component: FunnelTeam,
+          target: 'size',
+          isTurned: false,
+        },
+        {
+          title: 'Choose your size',
+          name: 'size',
+          component: FunnelSize,
           target: 'number',
           isTurned: false,
         },
@@ -55,15 +62,8 @@ export default {
           title: 'Write your name',
           name: 'name',
           component: FunnelName,
-          target: 'size',
-          isTurned: true,
-        },
-        {
-          title: 'Choose your size',
-          name: 'size',
-          component: FunnelSize,
           target: '',
-          isTurned: false,
+          isTurned: true,
         },
       ],
     }
@@ -84,6 +84,7 @@ export default {
         this.turn(this.targetStep.isTurned)
         this.updateStep(this.currentStep.target)
       } else {
+        this.turn(false)
         this.finalize()
       }
     },

@@ -7,8 +7,10 @@ import { mapGetters } from 'vuex'
 import P5 from 'p5'
 import MockupBackBody from '@/assets/MockupBackBody.png'
 import MockupBackHandle from '@/assets/MockupBackHandle.png'
+import MockupBackMask from '@/assets/MockupBackMask.png'
 import MockupFrontBody from '@/assets/MockupFrontBody.png'
 import MockupFrontHandle from '@/assets/MockupFrontHandle.png'
+import MockupFrontMask from '@/assets/MockupFrontMask.png'
 
 export default {
   name: 'Sketch',
@@ -35,10 +37,12 @@ export default {
         back: {
           body: null,
           handle: null,
+          mask: null,
         },
         front: {
           body: null,
           handle: null,
+          mask: null,
         },
       },
       sketch: null,
@@ -49,7 +53,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('funnel', ['activeTeam', 'isTurned', 'name', 'number']),
+    ...mapGetters('funnel', ['activeTeam', 'isTurned', 'name', 'number', 'size']),
     isInverted() {
       return this.isReverse || this.isTurned
     },
@@ -70,6 +74,9 @@ export default {
     number() {
       this.draw()
     },
+    size() {
+      this.draw()
+    },
   },
   mounted() {
     // eslint-disable-next-line no-new
@@ -80,8 +87,10 @@ export default {
         this.font = sketch.loadFont(this.fontPath)
         this.mockup.back.body = sketch.loadImage(MockupBackBody)
         this.mockup.back.handle = sketch.loadImage(MockupBackHandle)
+        this.mockup.back.mask = sketch.loadImage(MockupBackMask)
         this.mockup.front.body = sketch.loadImage(MockupFrontBody)
         this.mockup.front.handle = sketch.loadImage(MockupFrontHandle)
+        this.mockup.front.mask = sketch.loadImage(MockupFrontMask)
       }
 
       sketch.setup = () => {

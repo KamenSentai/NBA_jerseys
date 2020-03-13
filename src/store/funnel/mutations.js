@@ -12,7 +12,7 @@ export default {
     state.number = number
   },
   updateSize(state, size) {
-    state.activeSize = size
+    state.size = size
   },
   updateStep(state, name) {
     state.stepName = name

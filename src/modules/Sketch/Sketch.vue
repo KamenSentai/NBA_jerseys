@@ -230,9 +230,9 @@ export default {
       sketch.rotate(theta)
       sketch.fill('#FFFFFFB0')
 
-      for (let i = 0; i < deltas.length; i++) {
-        this.drawBorder(...deltas[i], name)
-      }
+      deltas.forEach((delta) => {
+        this.drawBorder(...delta, name)
+      })
 
       sketch.fill(activeTeam.colors[1])
       sketch.text(name, 0, 0)
@@ -259,9 +259,9 @@ export default {
       sketch.rotate(theta)
       sketch.fill('#FFFFFFB0')
 
-      for (let i = 0; i < deltas.length; i++) {
-        this.drawBorder(...deltas[i], number)
-      }
+      deltas.forEach((delta) => {
+        this.drawBorder(...delta, number)
+      })
 
       sketch.fill(activeTeam.colors[1])
       sketch.text(number, 0, 0)

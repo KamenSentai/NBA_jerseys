@@ -4,6 +4,7 @@
       :class="$style.image"
       src="@/assets/Mockup.png"
       alt="Mockup"
+      draggable="false"
     >
     <ModuleSketch :class="$style.sketch" />
   </div>
@@ -25,7 +26,6 @@ export default {
   position: relative;
   justify-self: center;
   font-size: 0;
-  pointer-events: none;
 }
 
 .image {

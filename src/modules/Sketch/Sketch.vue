@@ -35,11 +35,7 @@ export default {
         [-1, 0],
         [-1, -1],
       ],
-      dots: {
-        gap: 10,
-        reducer: 0.75,
-        size: 10,
-      },
+      dotsOpacity: null,
       fontPath: 'fonts/College-Bold.woff',
       mockup: {
         back: {
@@ -124,8 +120,14 @@ export default {
     name() {
       this.draw()
     },
-    number() {
+    number(value) {
       this.draw()
+      const opacityPer = value ? this.randomRange[value] : 100
+      const opacityDec = parseFloat(Math.round(opacityPer / 100 * 255))
+      const opacityHex = opacityDec.toString(16)
+      this.dotsOpacity = `${
+        opacityHex.toString(16).length === 1 ? '0' : ''
+      }${opacityHex.toString(16)}`
     },
     size() {
       this.draw()
@@ -182,18 +184,14 @@ export default {
       const {
         activeTeam,
         dotsSprites,
-        number,
-        randomRange,
+        dotsOpacity,
         size,
         sketch,
       } = this
 
       if (size) {
         const sprites = dotsSprites[size]
-        const opacityPer = number ? randomRange[number] : 100
-        const opacityDec = parseFloat(Math.round(opacityPer / 100 * 255))
-        const opacityHex = `${opacityDec < 10 ? '0' : ''}${opacityDec.toString(16)}`
-        sketch.tint(`${activeTeam.colors[1]}${opacityHex}`)
+        sketch.tint(`${activeTeam.colors[1]}${dotsOpacity || 'FF'}`)
 
         sprites.forEach((sprite) => {
           sketch.image(sprite, 0, 0, sketch.width, sketch.height)
@@ -223,7 +221,7 @@ export default {
       } = this
       const dx = sketch.width * 0.53125
       const dy = sketch.height * 0.15625
-      const textSize = 30
+      const textSize = 40
       const theta = -sketch.PI / 60
 
       sketch.push()

@@ -3,7 +3,7 @@
     <ComponentInput
       v-model="name"
       :class="$style.input"
-      maxlength="10"
+      maxlength="8"
       placeholder="Name"
       @input="type($event)"
     />

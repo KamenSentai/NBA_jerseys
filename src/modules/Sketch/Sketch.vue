@@ -125,9 +125,7 @@ export default {
       const opacityPer = value ? this.randomRange[value] : 100
       const opacityDec = parseFloat(Math.round(opacityPer / 100 * 255))
       const opacityHex = opacityDec.toString(16)
-      this.dotsOpacity = `${
-        opacityHex.toString(16).length === 1 ? '0' : ''
-      }${opacityHex.toString(16)}`
+      this.dotsOpacity = `${opacityHex.length === 1 ? '0' : ''}${opacityHex}`
     },
     size() {
       this.draw()

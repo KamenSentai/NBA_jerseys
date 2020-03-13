@@ -5,6 +5,7 @@
         $style.title,
         {
           ['text-light']: !!activeTeam,
+          [$style.isHidden]: !isLoaded,
         }]"
     >
       {{ currentStep.title }}
@@ -12,6 +13,11 @@
     <component
       :is="currentStep.component"
       :active-team="activeTeam"
+      :class="[
+        $style.component,
+        {
+          [$style.isHidden]: !isLoaded,
+        }]"
       @update="changeStep"
     />
   </div>
@@ -36,6 +42,7 @@ export default {
   },
   data() {
     return {
+      isLoaded: false,
       steps: [
         {
           title: 'Choose your team',
@@ -77,6 +84,11 @@ export default {
       return this.steps.find(step => step.name === this.currentStep.target)
     },
   },
+  mounted() {
+    setTimeout(() => {
+      this.isLoaded = true
+    }, 1000)
+  },
   methods: {
     ...mapActions('funnel', ['finalize', 'turn', 'updateStep']),
     changeStep() {
@@ -107,7 +119,20 @@ export default {
   font-size: 3.2rem;
   font-family: $college;
   text-transform: uppercase;
-  text-shadow: 5px 5px 5px rgba($dark, .125);;
-  transition: color .5s ease-in-out;
+  text-shadow: 5px 5px 5px rgba($dark, .125);
+  transition: color .5s ease-in-out, transform 1s ease-in-out, opacity 1s ease-in-out;
+
+  &.isHidden {
+    transform: translateY(1.25rem);
+  }
+}
+
+.component {
+  transition: opacity 1s ease-in-out .5s;
+}
+
+.isHidden {
+  opacity: 0;
+  pointer-events: none;
 }
 </style>

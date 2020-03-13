@@ -3,6 +3,7 @@
 </template>
 
 <script>
+/* eslint-disable no-bitwise */
 import { mapGetters } from 'vuex'
 import P5 from 'p5'
 import MockupBackBody from '@/assets/MockupBackBody.png'
@@ -54,11 +55,25 @@ export default {
   },
   computed: {
     ...mapGetters('funnel', ['activeTeam', 'isTurned', 'name', 'number', 'size']),
+    dataCombined() {
+      return `${this.activeTeam ? this.activeTeam.slug : ''}${this.number}${this.name}${this.size}`
+    },
     isInverted() {
       return this.isReverse || this.isTurned
     },
     scaledDeltas() {
       return n => this.deltas.map(delta => delta.map(value => value * n))
+    },
+    uniqueSeed() {
+      const dataCombined = this.dataCombined || ''
+      let hash = 0
+
+      for (let i = 0; i < dataCombined.length; i++) {
+        hash = ((hash << 5) - hash) + dataCombined.charCodeAt(i)
+        hash |= 0
+      }
+
+      return Math.abs(hash)
     },
   },
   watch: {
@@ -113,6 +128,7 @@ export default {
       this.drawMockup()
       if (this.number) this.writeNumber()
       if (this.name && this.isInverted) this.writeName()
+      this.sketch.randomSeed(this.uniqueSeed)
     },
     drawBorder(x, y, text) {
       const { sketch } = this

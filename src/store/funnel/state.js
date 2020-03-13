@@ -7,7 +7,7 @@ export default {
   name: '',
   number: '',
   stepName: 'team',
-  size: null,
+  size: '',
   sizes: ['xs', 's', 'm', 'l', 'xl'],
   teams,
 }

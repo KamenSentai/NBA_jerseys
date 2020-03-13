@@ -3,7 +3,7 @@
     <ComponentInput
       v-model="number"
       :class="$style.input"
-      min="0"
+      min="1"
       max="99"
       placeholder="Number"
       type="number"

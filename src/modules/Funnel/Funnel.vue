@@ -78,10 +78,14 @@ export default {
     },
   },
   methods: {
-    ...mapActions('funnel', ['turn', 'updateStep']),
+    ...mapActions('funnel', ['finalize', 'turn', 'updateStep']),
     changeStep() {
-      this.turn(this.targetStep.isTurned)
-      this.updateStep(this.currentStep.target)
+      if (this.targetStep) {
+        this.turn(this.targetStep.isTurned)
+        this.updateStep(this.currentStep.target)
+      } else {
+        this.finalize()
+      }
     },
   },
 }
@@ -94,7 +98,7 @@ export default {
   align-content: flex-start;
   width: 100%;
   height: 100%;
-  padding-top: 25vh;
+  padding-top: 12.5vh;
   color: $medium;
 }
 

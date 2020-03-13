@@ -1,4 +1,7 @@
 export default {
+  finalize({ commit }) {
+    commit('finalize')
+  },
   turn({ commit }, value = undefined) {
     commit('turn', value)
   },

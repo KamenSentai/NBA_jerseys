@@ -6,7 +6,11 @@
       alt="Mockup"
       draggable="false"
     >
-    <ModuleSketch :class="$style.sketch" />
+    <ModuleSketch
+      ref="wrapper"
+      :class="$style.wrapper"
+      :is-reverse="isReverse"
+    />
   </div>
 </template>
 
@@ -17,6 +21,12 @@ export default {
   name: 'Frame',
   components: {
     ModuleSketch,
+  },
+  props: {
+    isReverse: {
+      type: Boolean,
+      default: false,
+    },
   },
 }
 </script>
@@ -34,7 +44,7 @@ export default {
   opacity: 0;
 }
 
-.sketch {
+.wrapper {
   @include centralizer;
   @include overlay;
 }

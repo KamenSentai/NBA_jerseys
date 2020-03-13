@@ -1,4 +1,7 @@
 export default {
+  finalize(state) {
+    state.isFinalized = true
+  },
   turn(state, value) {
     state.isTurned = value === undefined ? !state.isTurned : value
   },

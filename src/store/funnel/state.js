@@ -3,6 +3,7 @@ import teams from '@/utils/teams'
 export default {
   activeSize: null,
   activeTeam: null,
+  isFinalized: false,
   isTurned: false,
   name: '',
   number: '',

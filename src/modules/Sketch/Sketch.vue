@@ -12,6 +12,12 @@ import MockupFrontHandle from '@/assets/MockupFrontHandle.png'
 
 export default {
   name: 'Sketch',
+  props: {
+    isReverse: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       deltas: [
@@ -44,6 +50,9 @@ export default {
   },
   computed: {
     ...mapGetters('funnel', ['activeTeam', 'isTurned', 'name', 'number']),
+    isInverted() {
+      return this.isReverse || this.isTurned
+    },
     scaledDeltas() {
       return n => this.deltas.map(delta => delta.map(value => value * n))
     },
@@ -53,19 +62,13 @@ export default {
       this.drawMockup()
     },
     isTurned() {
-      this.drawMockup()
-      if (this.number) this.writeNumber()
-      if (this.name && this.isTurned) this.writeName()
+      this.draw()
     },
     name() {
-      this.drawMockup()
-      if (this.number) this.writeNumber()
-      if (this.name && this.isTurned) this.writeName()
+      this.draw()
     },
     number() {
-      this.drawMockup()
-      if (this.number) this.writeNumber()
-      if (this.name && this.isTurned) this.writeName()
+      this.draw()
     },
   },
   mounted() {
@@ -86,19 +89,22 @@ export default {
         sketch.createCanvas(this.windowSize.width, this.windowSize.height)
         sketch.textFont(this.font)
         sketch.textAlign(sketch.CENTER, sketch.CENTER)
-        this.drawMockup()
+        this.draw()
       }
 
       sketch.windowResized = () => {
         this.updateSize()
         sketch.resizeCanvas(this.windowSize.width, this.windowSize.height)
-        this.drawMockup()
-        if (this.number) this.writeNumber()
-        if (this.name && this.isTurned) this.writeName()
+        this.draw()
       }
     }, this.$el)
   },
   methods: {
+    draw() {
+      this.drawMockup()
+      if (this.number) this.writeNumber()
+      if (this.name && this.isInverted) this.writeName()
+    },
     drawBorder(x, y, text) {
       const { sketch } = this
       sketch.push()
@@ -109,11 +115,11 @@ export default {
     drawMockup() {
       const {
         activeTeam,
-        isTurned,
+        isInverted,
         mockup,
         sketch,
       } = this
-      const mockupSide = !isTurned ? mockup.front : mockup.back
+      const mockupSide = !isInverted ? mockup.front : mockup.back
       sketch.clear()
       sketch.push()
       if (activeTeam) sketch.tint(this.activeTeam.colors[0])
@@ -153,15 +159,15 @@ export default {
     writeNumber() {
       const {
         activeTeam,
-        isTurned,
+        isInverted,
         number,
         sketch,
       } = this
       const deltas = this.scaledDeltas(2)
-      const dx = !isTurned ? sketch.width * 0.375 : sketch.width * 0.5625
-      const dy = !isTurned ? sketch.height * 0.4375 : sketch.height * 0.4375
-      const textSize = !isTurned ? 75 : 150
-      const theta = !isTurned ? sketch.PI / 60 : -sketch.PI / 60
+      const dx = !isInverted ? sketch.width * 0.375 : sketch.width * 0.5625
+      const dy = !isInverted ? sketch.height * 0.4375 : sketch.height * 0.4375
+      const textSize = !isInverted ? 75 : 150
+      const theta = !isInverted ? sketch.PI / 60 : -sketch.PI / 60
 
       sketch.push()
       sketch.textSize(textSize)

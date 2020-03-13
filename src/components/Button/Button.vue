@@ -4,6 +4,7 @@
       $style.container,
       {
         [$style.isButton]: isButton,
+        [$style.isLarge]: isLarge,
       }
     ]"
     :style="style"
@@ -32,6 +33,10 @@ export default {
       default: false,
     },
     isDarkable: {
+      type: Boolean,
+      default: false,
+    },
+    isLarge: {
       type: Boolean,
       default: false,
     },
@@ -80,7 +85,7 @@ export default {
 .container {
   min-width: 3.6rem;
   height: 3.6rem;
-  padding: 0 1.8rem;
+  padding: 0 1.2rem;
   color: $medium;
   font-size: 1.2rem;
   background-color: $light;
@@ -100,6 +105,14 @@ export default {
       content: " . ";
       pointer-events: none;
     }
+  }
+
+  &.isLarge {
+    min-width: 4.8rem;
+    height: 4.8rem;
+    padding: 0 1.6rem;
+    font-size: 1.6rem;
+    border-radius: 2.4rem;
   }
 }
 </style>
